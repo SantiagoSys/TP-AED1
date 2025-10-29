@@ -6,7 +6,7 @@ separacion: str = "--------------------------------------------------"
 ## Ejercicio 1
 
 def cantidadDeBarcosDeTamaño(barcos: list[BarcoEnGrilla], tamaño: int) -> int:
-    """ 
+    """
     Indica la cantidad de barcos de tamaño 'tamaño' que hay en 'barcos'.
     
     PRE: sonBarcosValidos(barcos)
@@ -24,12 +24,14 @@ def cantidadDeBarcosDeTamaño(barcos: list[BarcoEnGrilla], tamaño: int) -> int:
             cantidad += 1
     return cantidad
 
-print(cantidadDeBarcosDeTamaño([
+verificarEj1 = cantidadDeBarcosDeTamaño([
 [('H', 3), ('H', 4), ('H', 5)],
 [('F', 4), ('E', 4)],
 [('B', 4), ('B', 3), ('B', 2)]
-],2))
+],2)
+print(verificarEj1)
 print(separacion)
+
 
 # Ejercicio 2
 
@@ -39,20 +41,19 @@ def nuevoJuego(
         barcosDisponibles: list[Barco]
     ) -> EstadoJuego:
     """
-    Describe un nuevo estado de juego a partir de la 'cantidadDeFilas', de 
-    la 'cantidadDeColumnas' y de los barcos en 'barcosDisponibles'.
+    Crea un nuevo estado de juego.
     
-    PRE: 1 <= cantidadDeFilas <= 26
-    PRE: cantidadDeColumnas > 0
-    PRE: |barcosDisponibles| > 0
-    
+    PRE: cantidadDeFilas >= 1 ∧ cantidadDeFilas <= 26
+         cantidadDeColumnas > 0
+         |barcosDisponibles| > 0
+         
     Args:
-        cantidadDeFilas (int): La cantidad de filas de cada una de las grillas.
-        cantidadDeColumnas (int): La cantidad de columnas de cada una de las grillas.
-        barcosDisponibles (list[Barco]): Lista de barcos.
+        cantidadDeFilas (int): Cantidad de filas que tendrá el tablero.
+        cantidadDeColumnas (int) : cantidad de columnas que tendrá el tablero.
+        barcosDisponibles (list[Barco]): lista de barcos, pero solo van a figurar el tamaño de los barcos.
     
     Returns:
-        Las dimensiones de las grillas, los barcos disponibles, el turno de quien es y los tableros del jugador 1 y 2.
+        Un nuevo estado de juego 'EstadoJuego', donde ambos tableros 'Tablero' en 'EstadoJuego' comienzan vacios.
     """
     return ((cantidadDeFilas, cantidadDeColumnas), barcosDisponibles, [UNO], nuevoTablero(cantidadDeFilas, cantidadDeColumnas), nuevoTablero(cantidadDeFilas, cantidadDeColumnas))
     #return((5,5), [3, 3, 2], [UNO],
@@ -73,9 +74,9 @@ def nuevoJuego(
 def nuevoTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Tablero:
     grilla: Grilla = []
 
-    for elem in range(cantidadDeFilas):
+    for _ in range(cantidadDeFilas):
         res: list[Celda] = []
-        for elem in range(cantidadDeColumnas):
+        for _ in range(cantidadDeColumnas):
             res.append(VACÍO)
         grilla.append(res)
 
@@ -84,78 +85,100 @@ def nuevoTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Tablero:
 print(nuevoJuego(5, 5, [3,3,2]))
 
 
-## Ejercicio 3
-
-def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
-    """ Indica si el estadoDeJuego es válido.
-        El estadoDeJuego es válido si: el tablero tiene entre 1 y 26 filas, proque hay 26 letras en el abecedario.
-                                       el tablero tiene al menos 1 columna.
-                                       solo puede jugar un jugador a la vez.
-                                       hay al menos un barco disponible en el juego.
-                                       el tablero de jugador UNO es válido.
-                                       el tablero de jugador DOS es válido.
-                                       los ataques registrados entre tableros coinciden.
-    """
-    #res: bool = cantidadDeFilasEstadoJuego(estadoDeJuego) >= 1 and cantidadDeFilasEstadoJuego(estadoDeJuego) <= 26 and cantidadDeColumnasEstadoJuego(estadoDeJuego) > 0 and len(estadoDeJuego[2]) == 1 and len(barcosDisponibles(estadoDeJuego)) > 0 and tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, UNO), estadoDeJuego) and tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, DOS), estadoDeJuego) and coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
-    # Verifica que en el juego haya entre 1 y 26 filas.
-    hayEntre1y26Filas: bool = cantidadDeFilasEstadoJuego(estadoDeJuego) >= 1 and cantidadDeFilasEstadoJuego(estadoDeJuego) <= 26
-
-    # Verifica que en el juego haya al menos una columna.
-    hayAlMenosUnaColumna: bool = cantidadDeColumnasEstadoJuego(estadoDeJuego) > 0
-
-    # Verifica que solo un jugador pueda jugar a la vez.
-    soloUnJugadorALaVez: bool = len(estadoDeJuego[2]) == 1
-
-    # Verifica que haya al menos un barco en el juego.
-    hayAlMenosUnBarcoEnJuego: bool = len(barcosDisponibles(estadoDeJuego)) > 0
-
-    # Verifica que el tablero del jugador UNO sea válido y cumpla con los requerimientos para tal.
-    tableroDeJugadorUNOEsValido: bool = tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, UNO), estadoDeJuego)
-
-    # Verifica que el tablero del jugador DOS sea válido y cumpla con los requerimientos para tal.
-    tableroDeJugadorDOSEsValido: bool = tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, DOS), estadoDeJuego)
-
-    # Verifica que los ataques esten sincronizados entre tableros.
-    losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
-
-    return hayEntre1y26Filas and hayAlMenosUnaColumna and soloUnJugadorALaVez and hayAlMenosUnBarcoEnJuego and tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido and losAtaquesCoinciden
-
-
-def tableroValidoEnJuego(tablero: Tablero, estadoDeJuego: EstadoJuego) -> bool:
-    res: bool = grillaVálidaEnJuego(grillaLocal(tablero), estadoDeJuego) and grillaVálidaEnJuego(grillaOponente(tablero), estadoDeJuego) and coincidenBarcosEnGrilla(barcosDisponibles(estadoDeJuego), grillaLocal(tablero))
-
-
-def coincidenBarcosEnGrilla(barcos: list[Barco], grilla: Grilla) -> bool:
-    # Indica si varios barcos pertenecientes a la misma grilla tienen el mismo tamaño.
-    return mismosElementos(barcos, tamaños(barcosEnGrilla[grilla]))
-
-
-def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:
-    # Indica cuál es el tamaño de cada uno de los barcos pertenecientes a la grilla.
-    res: list[int] = []
-
+## Ejercicio 5
+# FUNCIONES AUXILIARES
+def algúnBarcoOcupaLaPosición(barcos: list[BarcoEnGrilla], posición: Posición) -> bool:
     for barco in barcos:
-        tamaño: int = len(barco)
-        res.append(tamaño)
+        if posición in barco:
+            return True
+    return False
+
+def posicionesOcupadasEnGrilla(grilla: Grilla, posiciones: list[Posición]) -> bool:
+    for posición in posiciones:
+        if celdaEnPosición(grilla, posición) != BARCO:
+            return False
+    return True
+
+def sePuedeConstruirBarcoVerticalDesde(grilla: Grilla, posición: Posición) -> bool:
+    return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, ARRIBA) or hayBarcoAl(grilla, posición, ABAJO))
+
+def sePuedeConstruirBarcoHorizontalDesde(grilla: Grilla, posición: Posición) -> bool:
+    return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, DERECHA) or hayBarcoAl(grilla, posición, IZQUIERDA))
+
+def noHayMasDeUnaFormaDeConstruirUnBarcoDesde(grilla: Grilla, posición: Posición) -> bool:
+    return not(sePuedeConstruirBarcoHorizontalDesde(grilla, posición)) or not(sePuedeConstruirBarcoVerticalDesde(grilla, posición))
+
+
+grilla: list[list[Celda]] = [
+    [BARCO, VACÍO, VACÍO],
+    [VACÍO, BARCO, VACÍO],
+    [VACÍO, VACÍO, BARCO]
+]
+
+posiciones1: list[Posición] = [('A',1), ('B',2), ('C',3)]
+posiciones2: list[Posición] = [('A',1), ('B',2), ('C',3), ('A',2)]
+print(posicionesOcupadasEnGrilla(grilla, posiciones1))
+print(posicionesOcupadasEnGrilla(grilla, posiciones2))
+print(separacion)
+
+# FUNCION PRINCIPAL
+def barcosEnGrilla(grilla: Grilla) -> list[BarcoEnGrilla]:
+    """ Devuelve todos los barcos que se encuentran dentro de la grilla.
+    """
+    res: list[BarcoEnGrilla] = []
+    filas: int = len(grilla)
+    columnas: int = len(grilla[0])
+
+    letras: list[str] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+
+    for i in range(filas):
+        for j in range(columnas):
+            posición: Posición = (letras[i], j+1)
+
+            if grilla[i][j] == BARCO and not algúnBarcoOcupaLaPosición(res, posición):
+                barco: BarcoEnGrilla = []
+
+                if sePuedeConstruirBarcoHorizontalDesde(grilla, posición):
+                    k: int = j
+                    while k < columnas and grilla[i][k] == BARCO:
+                        barco.append((letras[i], k+1))
+                        k += 1
+                    
+                elif sePuedeConstruirBarcoVerticalDesde(grilla, posición):
+                    k: int = i
+                    while k < filas and grilla[k][j] == BARCO:
+                        barco.append((letras[k], j+1))
+                        k += 1
+                
+                else:
+                    barco.append(posición)
+                
+                res.append(barco)
 
     return res
 
+grilla: Grilla = [
+[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+[BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
+[BARCO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+[VACÍO, BARCO, BARCO, BARCO, VACÍO, BARCO, VACÍO],
+[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, BARCO, VACÍO],
+]
 
-def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:
-    # Indica si dos listas tienen los mismos elementos.
-     for elemento in lista1:
-        return cantidadDeApariciones(elemento, lista1) == cantidadDeApariciones(elemento, lista2)
+verificarEj5 = barcosEnGrilla(grilla)
+print(verificarEj5)
 
 
+## Ejercicio 3
+# FUNCIONES AUXILIARES
 def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> bool:
-    # Indica si las posiciones atacadas entre ambos tableros coinciden en contenido y cantidad.
     grilla_local = tablero[0]
     grilla_op_local = tableroOponente[0]
     grilla_op = tablero[1]
     grilla_op_op = tableroOponente[1]
     
-    n1 = 0  # celdas no vacías en tablero1
-    n2 = 0  # celdas no vacías en tableroOponente1
+    n1 = 0  # Celdas no vacías en tablero1
+    n2 = 0  # Celdas no vacías en tableroOponente1
     
     filas = len(grilla_local)
     columnas = len(grilla_local[0])
@@ -180,6 +203,63 @@ def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> b
     
     return 0 <= n1 - n2 <= 1
 
+def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:
+    for elemento in lista1:
+        if cantidadDeApariciones(elemento, lista1) != cantidadDeApariciones(elemento, lista2):
+            return False
+    return True
+
+def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:
+    res: list[int] = []
+
+    for barco in barcos:
+        tamaño: int = len(barco)
+        res.append(tamaño)  
+
+    return res
+
+def coincidenBarcosEnGrilla(barcos: list[Barco], grilla: Grilla) -> bool:
+    return mismosElementos(barcos, tamaños(barcosEnGrilla(grilla)))
+
+def tableroVálidoEnJuego(tablero: Tablero, estadoDeJuego: EstadoJuego) -> bool:
+    res: bool = grillaVálidaEnJuego(grillaLocal(tablero), estadoDeJuego) and grillaVálidaEnJuego(grillaOponente(tablero), estadoDeJuego) and coincidenBarcosEnGrilla(barcosDisponibles(estadoDeJuego), grillaLocal(tablero))
+    return res
+
+# FUNCION PRINCIPAL
+def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
+    """ Indica si el estadoDeJuego es válido.
+        El estadoDeJuego es válido si: el tablero tiene entre 1 y 26 filas, proque hay 26 letras en el abecedario.
+                                       el tablero tiene al menos 1 columna.
+                                       solo puede jugar un jugador a la vez.
+                                       hay al menos un barco disponible en el juego.
+                                       el tablero de jugador UNO es válido.
+                                       el tablero de jugador DOS es válido.
+                                       los ataques registrados entre tableros coinciden.
+    """
+    #res: bool = cantidadDeFilasEstadoJuego(estadoDeJuego) >= 1 and cantidadDeFilasEstadoJuego(estadoDeJuego) <= 26 and cantidadDeColumnasEstadoJuego(estadoDeJuego) > 0 and len(estadoDeJuego[2]) == 1 and len(barcosDisponibles(estadoDeJuego)) > 0 and tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, UNO), estadoDeJuego) and tableroValidoEnJuego(tableroDeJugador(estadoDeJuego, DOS), estadoDeJuego) and coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
+    # Verifica que en el juego haya entre 1 y 26 filas.
+    hayEntre1y26Filas: bool = cantidadDeFilasEstadoJuego(estadoDeJuego) >= 1 and cantidadDeFilasEstadoJuego(estadoDeJuego) <= 26
+
+    # Verifica que en el juego haya al menos una columna.
+    hayAlMenosUnaColumna: bool = cantidadDeColumnasEstadoJuego(estadoDeJuego) > 0
+
+    # Verifica que solo un jugador pueda jugar a la vez.
+    soloUnJugadorALaVez: bool = len(estadoDeJuego[2]) == 1
+
+    # Verifica que haya al menos un barco en el juego.
+    hayAlMenosUnBarcoEnJuego: bool = len(barcosDisponibles(estadoDeJuego)) > 0
+
+    # Verifica que el tablero del jugador UNO sea válido y cumpla con los requerimientos para tal.
+    tableroDeJugadorUNOEsValido: bool = tableroVálidoEnJuego(tableroDeJugador(estadoDeJuego, UNO), estadoDeJuego)
+
+    # Verifica que el tablero del jugador DOS sea válido y cumpla con los requerimientos para tal.
+    tableroDeJugadorDOSEsValido: bool = tableroVálidoEnJuego(tableroDeJugador(estadoDeJuego, DOS), estadoDeJuego)
+
+    # Verifica que los ataques esten sincronizados entre tableros.
+    losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
+
+    return hayEntre1y26Filas and hayAlMenosUnaColumna and soloUnJugadorALaVez and hayAlMenosUnBarcoEnJuego and tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido and losAtaquesCoinciden
+
 tableroJ1 = ([
  [VACÍO,VACÍO,VACÍO,VACÍO],
  [BARCO,VACÍO,VACÍO,VACÍO],
@@ -191,7 +271,8 @@ tableroJ1 = ([
  [VACÍO,VACÍO,VACÍO,VACÍO],
  [VACÍO,VACÍO,VACÍO,VACÍO]
  ])
-tableroj2 = ([
+
+tableroJ2 = ([
  [VACÍO,VACÍO,VACÍO,VACÍO],
  [VACÍO,VACÍO,VACÍO,VACÍO],
  [VACÍO,BARCO,BARCO,BARCO],
@@ -202,13 +283,13 @@ tableroj2 = ([
  [VACÍO,VACÍO,VACÍO,VACÍO],
  [VACÍO,VACÍO,VACÍO,VACÍO]
  ])
-verificacion = esEstadoDeJuegoVálido(((4,4), [2,2], [DOS], tableroJ1, tableroj2))
-print(verificacion)
-print(separacion)
+
+verificarEj3 = esEstadoDeJuegoVálido(((4,4), [2,2], [DOS], tableroJ1, tableroJ2))
+print(verificarEj3)
 
 
 ## Ejercicio 4
-
+# FUNCION PRINCIPAL
 def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> ResultadoDisparo:
     """
     Realiza un disparo en la posición indicada, modificando el estado del juego según el resultado.
@@ -281,96 +362,3 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
     cambiarTurno(estado_juego)
 
     return resultado
-
-
-## Ejercicio 5
-
-def barcosEnGrilla(grilla: Grilla) -> list[BarcoEnGrilla]:
-    resultado: list[BarcoEnGrilla] = []
-    filas: int = len(grilla)
-    columnas: int = len(grilla[0])
-
-    letras: list[str] = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-
-    agregadas: list[list[bool]] = [[False for _ in range(columnas)] for _ in range(filas)]
-
-    for i in range(filas):
-        for j in range(columnas):
-            pos: Posición = (letras[i], j + 1)
-            if grilla[i][j] == BARCO and not agregadas[i][j]:
-                barco: BarcoEnGrilla = []
-
-                if sePuedeConstruirBarcoHorizontalDesde(grilla, pos):
-                    k: int = j
-                    while k < columnas and grilla[i][k] == BARCO:
-                        barco.append((letras[i], k + 1))
-                        agregadas[i][k] = True
-                        k += 1
-
-                elif sePuedeConstruirBarcoVerticalDesde(grilla, pos):
-                    k = i
-                    while k < filas and grilla[k][j] == BARCO:
-                        barco.append((letras[k], j + 1))
-                        agregadas[k][j] = True
-                        k += 1
-
-                else:
-                    barco.append(pos)
-                    agregadas[i][j] = True
-
-                resultado.append(barco)
-
-    return resultado
-
-
-def noHayMasDeUnaFormaDeConstruirUnBarcoDesde(grilla: Grilla, posición: Posición) -> bool:
-    return not(sePuedeConstruirBarcoHorizontalDesde(grilla, posición)) or not(sePuedeConstruirBarcoVerticalDesde(grilla, posición))
-
-
-def sePuedeConstruirBarcoHorizontalDesde(grilla: Grilla, posición: Posición) -> bool:
-    return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, DERECHA) or hayBarcoAl(grilla, posición, IZQUIERDA))
-
-
-def sePuedeConstruirBarcoVerticalDesde(grilla: Grilla, posición: Posición) -> bool:
-    return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, ARRIBA) or hayBarcoAl(grilla, posición, ABAJO))
-
-
-def posicionesOcupadasEnGrilla(grilla: Grilla, posiciones: list[Posición]) -> bool:
-    for posición in posiciones:
-        if celdaEnPosición(grilla, posición) != BARCO:
-            return False
-    return True
-
-def algúnBarcoOcupaLaPosición(barcos: list[BarcoEnGrilla], posición: Posición) -> bool:
-    for barco in barcos:
-        if posición in barco:
-            return True
-    return False
-
-barcos = [[('H', 3), ('H', 4), ('H', 5)],
- [('F', 4), ('E', 4)],
- [('B', 4), ('B', 3), ('B', 2)]]
-
-print(algúnBarcoOcupaLaPosición(barcos, ('H',5)))
-print(algúnBarcoOcupaLaPosición(barcos, ('E',5)))
-
-grilla: list[list[Celda]] = [
-    [BARCO, VACÍO, VACÍO],
-    [VACÍO, BARCO, VACÍO],
-    [VACÍO, VACÍO, BARCO]
-]
-posiciones1: list[Posición] = [('A',1), ('B',2), ('C',3)]
-posiciones2: list[Posición] = [('A',1), ('B',2), ('C',3), ('A',2)]
-print(posicionesOcupadasEnGrilla(grilla, posiciones1))
-print(posicionesOcupadasEnGrilla(grilla, posiciones2))
-print(separacion)
-
-grilla: Grilla = [
-[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-[BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
-[BARCO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-[VACÍO, BARCO, BARCO, BARCO, VACÍO, BARCO, VACÍO],
-[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, BARCO, VACÍO],
-]
-
-print(barcosEnGrilla(grilla))
