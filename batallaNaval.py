@@ -469,33 +469,34 @@ class DispararEnPosición_Test(unittest.TestCase):
     def test_disparo_en_posicion_dos_tocado(self):
         estado = ((5,5), [3, 2], [DOS],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
-             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
-            ([[VACÍO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
-             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
-
+             [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+        )
+        
         estado_esperado = ((5,5), [3, 2], [UNO],
-            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
-             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
-            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
-             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
-              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
-
-        resultado = dispararEnPosición(estado, ("A", 2))
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+            [[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+        )
+        resultado = dispararEnPosición(estado, ("A", 1))
         self.assertEqual(resultado, TOCADO)
         self.assertEqual(estado, estado_esperado)
 
@@ -531,3 +532,4 @@ class DispararEnPosición_Test(unittest.TestCase):
         resultado = dispararEnPosición(estado, ("A", 2))
         self.assertEqual(resultado, NADA)
         self.assertEqual(estado, estado_esperado)
+
