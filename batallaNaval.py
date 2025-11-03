@@ -366,6 +366,7 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
 
 
 class DispararEnPosición_Test(unittest.TestCase):
+
     def test_disparo_en_posicion_vacia(self):
         estado = ((5,5), [3, 2], [UNO],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -466,6 +467,7 @@ class DispararEnPosición_Test(unittest.TestCase):
         self.assertEqual(resultado, NADA)
         self.assertEqual(estado, estado_esperado)
 
+
     def test_disparo_en_posicion_dos_tocado(self):
         estado = ((5,5), [3, 2], [DOS],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -500,6 +502,7 @@ class DispararEnPosición_Test(unittest.TestCase):
         self.assertEqual(resultado, TOCADO)
         self.assertEqual(estado, estado_esperado)
 
+
     def test_disparo_en_posicion_dos_vacia(self):
         estado = ((5,5), [3, 2], [DOS],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -532,4 +535,3 @@ class DispararEnPosición_Test(unittest.TestCase):
         resultado = dispararEnPosición(estado, ("A", 2))
         self.assertEqual(resultado, NADA)
         self.assertEqual(estado, estado_esperado)
-
