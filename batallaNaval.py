@@ -361,4 +361,177 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
     # Cambiar el turno al otro jugador
     cambiarTurno(estado_juego)
 
+
     return resultado
+
+
+
+class DispararEnPosición_Test(unittest.TestCase):
+    def test_disparo_en_posicion_vacia(self):
+        estado = ((5,5), [3, 2], [UNO],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+        )
+        
+        estado_esperado = ((5,5), [3, 2], [DOS],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+            [[AGUA, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[AGUA, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+            [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+             [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+        )
+        resultado = dispararEnPosición(estado, ("A", 1))
+        self.assertEqual(resultado, NADA)
+        self.assertEqual(estado, estado_esperado)
+
+    def test_disparo_en_posicion_uno_tocado(self):
+        estado = ((5,5), [3, 2], [UNO],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        estado_esperado = ((5,5), [3, 2], [DOS],
+            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        resultado = dispararEnPosición(estado, ("A", 1))
+        self.assertEqual(resultado, TOCADO)
+        self.assertEqual(estado, estado_esperado)
+
+
+    def test_disparo_en_posicion_uno_vacia(self):
+        estado = ((5,5), [3, 2], [UNO],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        estado_esperado = ((5,5), [3, 2], [DOS],
+            ([[BARCO, AGUA, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[AGUA, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        resultado = dispararEnPosición(estado, ("A", 2))
+        self.assertEqual(resultado, NADA)
+        self.assertEqual(estado, estado_esperado)
+
+
+    def test_disparo_en_posicion_dos_tocado(self):
+        estado = ((5,5), [3, 2], [DOS],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        estado_esperado = ((5,5), [3, 2], [UNO],
+            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[BARCO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        resultado = dispararEnPosición(estado, ("A", 2))
+        self.assertEqual(resultado, TOCADO)
+        self.assertEqual(estado, estado_esperado)
+
+
+    def test_disparo_en_posicion_dos_vacia(self):
+        estado = ((5,5), [3, 2], [DOS],
+            ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[VACÍO, BARCO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        estado_esperado = ((5,5), [3, 2], [UNO],
+            ([[BARCO, AGUA, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, BARCO, BARCO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]),
+            ([[AGUA, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, BARCO, BARCO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, BARCO, BARCO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]],
+             [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
+
+        resultado = dispararEnPosición(estado, ("A", 2))
+        self.assertEqual(resultado, NADA)
+        self.assertEqual(estado, estado_esperado)
