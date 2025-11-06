@@ -103,36 +103,52 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
     
 # FUNCIONES AUXILIARES
 def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> bool:
-    grilla_local = tablero[0]
-    grilla_op_local = tableroOponente[0]
-    grilla_op = tablero[1]
-    grilla_op_op = tableroOponente[1]
+    grilla_uno_local = tablero[0]
+    grilla_dos_local = tableroOponente[0]
+    grilla_uno_oponente = tablero[1]
+    grilla_dos_oponente = tableroOponente[1]
     
     n1 = 0  # Celdas no vacías en tablero1
     n2 = 0  # Celdas no vacías en tableroOponente1
     
-    filas = len(grilla_local)
-    columnas = len(grilla_local[0])
+    filas = len(grilla_uno_local)
+    columnas = len(grilla_uno_local[0])
     
     for i in range(filas):
         for j in range(columnas):
-            celda_tablero = grilla_local[i][j]
-            celda_tablero_op = grilla_op_local[i][j]
-            celda_tableroOponente = grilla_op[i][j]
-            celda_tableroOponente_op = grilla_op_op[i][j]
-            
-            if celda_tablero != VACÍO and celda_tablero != celda_tableroOponente_op:
-                return False
-            
-            if celda_tableroOponente != VACÍO and celda_tableroOponente != celda_tablero_op:
-                return False
+            celda_tablero = grilla_uno_local[i][j]
+            celda_tablero_op = grilla_dos_local[i][j]
+            celda_tableroOponente = grilla_uno_oponente[i][j]
+            celda_tableroOponente_op = grilla_dos_oponente[i][j]
             
             if celda_tablero != VACÍO:
                 n1 += 1
             if celda_tableroOponente != VACÍO:
                 n2 += 1
+
+            # --- Primera parte del asegura ---
+            # tablero1 -> tableroOponente0
+            if celda_tablero != VACÍO:
+                if celda_tableroOponente_op != celda_tablero:
+                    return False
+            else:
+                if not (celda_tableroOponente_op == VACÍO or celda_tableroOponente_op == BARCO):
+                    return False
+
+            # --- Segunda parte del asegura ---
+            # tableroOponente1 -> tablero0
+            if celda_tableroOponente != VACÍO:
+                if celda_tablero_op != celda_tableroOponente:
+                    return False
+            else:
+                if not (celda_tablero_op == VACÍO or celda_tablero_op == BARCO):
+                    return False
+            
     
-    return 0 <= n1 - n2 <= 1
+    if n1 - n2 < 0 or n1 - n2 > 1:
+        return False
+
+    return True
 
 def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:
     # Indica si cada uno de los elementos pertenecientes a la primera lista aparece también en la segunda.
