@@ -624,6 +624,22 @@ class barcosEnGrilla_Test(unittest.TestCase):
                                   [BARCO, VACÍO, BARCO, BARCO, VACÍO, BARCO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, BARCO, VACÍO]])
 
+    def test_sin_barcos(self):
+        grilla: Grilla = [[BARCO, BARCO, AGUA, VACÍO, VACÍO, VACÍO, VACÍO],
+                          [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, BARCO, BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+                          [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+                          [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        barcosEsperados: list[BarcoEnGrilla] = [[("C",1),("C",2),("C",3)]]
+
+        self.assertTrue(barcosEnGrilla(grilla), barcosEsperados)
+        self.assertEqual(grilla, [[BARCO, BARCO, AGUA, VACÍO, VACÍO, VACÍO, VACÍO],
+                                  [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+                                  [BARCO, BARCO, BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
+                                  [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
+                                  [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+
     def test_varios_barcos_uno_de_un_solo_tamanio(self):
         grilla: Grilla = [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
@@ -692,6 +708,10 @@ class barcosEnGrilla_Test(unittest.TestCase):
                                   [BARCO, BARCO, BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=1)
 
 
 if __name__ == '__main__':
