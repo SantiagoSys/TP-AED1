@@ -253,8 +253,8 @@ def barcosEnGrilla(grilla: Grilla) -> list[BarcoEnGrilla]:
         for j in range(columnas):
             posición: Posición = (letras[i], j+1)
             
-            # Solamente si la celda es un BARCO y ningún barco ocupa ya esa posición avanzo con
-            if grilla[i][j] == BARCO and not algúnBarcoOcupaLaPosición(res, posición):
+            # Solamente si la celda es distinto de VACÍO y ningún barco ocupa ya esa posición avanzo con
+            if grilla[i][j] != VACÍO and not algúnBarcoOcupaLaPosición(res, posición):
                 barco: BarcoEnGrilla = []
 
                 # Indica si alguna celda adyacente horizontal a la que estoy parado es igual a BARCO.
@@ -280,6 +280,7 @@ def barcosEnGrilla(grilla: Grilla) -> list[BarcoEnGrilla]:
 
     return res
 
+
 # FUNCIONES AUXILIARES
 def algúnBarcoOcupaLaPosición(barcos: list[BarcoEnGrilla], posición: Posición) -> bool:
     # Indica tal que dada una posición y una lista de posiciones, si dicha posición pertenece a la lista.
@@ -301,7 +302,5 @@ def sePuedeConstruirBarcoVerticalDesde(grilla: Grilla, posición: Posición) -> 
 def sePuedeConstruirBarcoHorizontalDesde(grilla: Grilla, posición: Posición) -> bool:
     # Determina si desde una posición dada se puede construir un barco en orientación horizontal.
     return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, DERECHA) or hayBarcoAl(grilla, posición, IZQUIERDA))
-
-
 
 
