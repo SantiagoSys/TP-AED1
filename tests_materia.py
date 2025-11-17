@@ -2,7 +2,7 @@ import unittest
 from batallaNaval import *
 
 # Tests
-# # Tests Ejercicio 1
+# Tests Ejercicio 1
 class cantidadDeBarcosDeTamaño_Test(unittest.TestCase):
     def test_longitud_2_hay_uno_en_el_medio(self): # Un ejemplo de test
         barcos = [[('H',3), ('H',4), ('H',5)],
@@ -38,6 +38,7 @@ class cantidadDeBarcosDeTamaño_Test(unittest.TestCase):
                                   [('C',1), ('C',2)],
                                   [('F',3)]])
 
+
 # Tests Ejercicio 2
 class nuevoJuego_Test(unittest.TestCase):
     def test_2x2_y_un_barco_longitud_2(self):
@@ -60,6 +61,7 @@ class nuevoJuego_Test(unittest.TestCase):
         self.assertEqual(juego[2], [UNO])
         self.assertEqual(juego[3], (grillaUNO_local, grillaUNO_oponente))
         self.assertEqual(juego[4], (grillaDOS_local, grillaDOS_oponente))
+
 
     def test_1x1_y_un_barco_longitud_2(self):
         # En un tablero de longitud 3x4.
@@ -84,6 +86,7 @@ class nuevoJuego_Test(unittest.TestCase):
         self.assertEqual(juego[3], (grillaUNO_local, grillaUNO_oponente))
         # Verifica el tablero del jugador DOS.
         self.assertEqual(juego[4], (grillaDOS_local, grillaDOS_oponente))
+
 
     def test_3x4_y_tres_barcos_longitudes_distintas(self):
         # En un tablero de longitud 3x4.
@@ -380,7 +383,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
 
 
-#Tests Ejercicio 4
+# Tests Ejercicio 4
 class DispararEnPosición_Test(unittest.TestCase):
     def test_disparo_en_posicion_vacia(self):
         estado = ((5,5), [3, 2], [UNO],
@@ -532,7 +535,7 @@ class DispararEnPosición_Test(unittest.TestCase):
         self.assertEqual(estado, estado_esperado)
 
 
-#Tests Ejercicio 5
+# Tests Ejercicio 5
 class barcosEnGrilla_Test(unittest.TestCase):
     def test_varios_barcos_distintos_tamanios(self):
         # Varios barcos de distintos tamaños en una grilla con varios barcos de distintos tamaños
@@ -557,6 +560,7 @@ class barcosEnGrilla_Test(unittest.TestCase):
 
 
     def test_descarto_barco_invalido_con_celda_agua(self):
+        # En la grilla solamente hay un barco de longitud 3, el otro se descarta.
         grilla: Grilla = [[BARCO, BARCO, AGUA, VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, BARCO, BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -565,7 +569,9 @@ class barcosEnGrilla_Test(unittest.TestCase):
 
         barcosEsperados: list[BarcoEnGrilla] = [[("C",1),("C",2),("C",3)]]
 
+        # Verifico que barcosEnGrilla me devuelva los barcos esperados.
         self.assertTrue(barcosEnGrilla(grilla), barcosEsperados)
+        # Verifica que la grilla no cambie.
         self.assertEqual(grilla, [[BARCO, BARCO, AGUA, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [BARCO, BARCO, BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -574,6 +580,7 @@ class barcosEnGrilla_Test(unittest.TestCase):
 
 
     def test_varios_barcos_uno_de_tamanio_uno(self):
+        # En la grilla hay varios barcos de distintos tamanios y uno de longitud 1.
         grilla: Grilla = [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
                           [BARCO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -585,7 +592,9 @@ class barcosEnGrilla_Test(unittest.TestCase):
                                                 [('D',6), ('E',6)],
                                                 [('D',1),('C',1), ('B',1)]]
 
+        # Verifico que barcosEnGrilla me devuelva los barcos esperados.
         self.assertTrue(barcosEnGrilla(grilla), barcosEsperados)
+        # Verifica que la grilla no cambie.
         self.assertEqual(grilla, [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
                                   [BARCO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -594,6 +603,7 @@ class barcosEnGrilla_Test(unittest.TestCase):
 
 
     def test_un_solo_barco(self):
+        # El la grilla hay solamente un barco de longitud 1.
         grilla: Grilla = [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, BARCO, VACÍO, VACÍO, VACÍO],
@@ -602,7 +612,9 @@ class barcosEnGrilla_Test(unittest.TestCase):
 
         barcosEsperados: list[BarcoEnGrilla] = [[('B',4)]]
 
+        # Verifico que barcosEnGrilla me devuelva los barcos esperados.
         self.assertTrue(barcosEnGrilla(grilla), barcosEsperados)
+        # Verifica que la grilla no cambie.
         self.assertEqual(grilla, [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [VACÍO, VACÍO, VACÍO, BARCO, VACÍO, VACÍO, VACÍO],
