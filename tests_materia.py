@@ -550,7 +550,6 @@ class barcosEnGrilla_Test(unittest.TestCase):
                                                 [('D',6), ('E',6)],
                                                 [('D',1),('C',1), ('B',1)]]
 
-        # Pensar! qué pasa si el orden de los barcos en la lista no es el mismo? respeta la especificación?
         self.assertTrue(barcosEnGrilla(grilla), barcosEsperados)
         self.assertEqual(grilla, [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                                   [BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
