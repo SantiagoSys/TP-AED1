@@ -49,11 +49,15 @@ def nuevoJuego(
 
 
 # FUNCIONES AUXILIARES
+# Separa la grilla local de la grilla oponente para evitar mezclarlas y conseguir
+#un nuevo tablero formado por ambas.
 def nuevoTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Tablero:
     grilla_local: Grilla = nuevoTableroAux(cantidadDeFilas, cantidadDeColumnas)
     grilla_oponente: Grilla = nuevoTableroAux(cantidadDeFilas, cantidadDeColumnas)
     return (grilla_local, grilla_oponente)
 
+# Describe una nueva grilla, tomando en cuenta la cantidad de filas y de columnas,
+#que cuenta con todas sus celdas vacías.
 def nuevoTableroAux(cantidadDeFilas: int, cantidadDeColumnas: int) -> Grilla:
     grilla: Grilla = []
     for i in range(0, cantidadDeFilas):
@@ -100,30 +104,34 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
     losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
 
     return hayEntre1y26Filas and hayAlMenosUnaColumna and soloUnJugadorALaVez and hayAlMenosUnBarcoEnJuego and tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido and losAtaquesCoinciden
-    
+
+
 # FUNCIONES AUXILIARES
+# Indica si coinciden tanto las posiciones en grilla_uno_local y grilla_dos_oponente
+#y viceversa, como las posiciones en grilla_dos_local y grilla_uno_oponente y 
+#viceversa.
 def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> bool:
-    grilla_uno_local = tablero[0]
-    grilla_dos_local = tableroOponente[0]
-    grilla_uno_oponente = tablero[1]
-    grilla_dos_oponente = tableroOponente[1]
+    grilla_uno_local: Grilla = tablero[0]
+    grilla_dos_local: Grilla = tableroOponente[0]
+    grilla_uno_oponente: Grilla = tablero[1]
+    grilla_dos_oponente: Grilla = tableroOponente[1]
     
-    n1 = 0  # Celdas no vacías en tablero1
-    n2 = 0  # Celdas no vacías en tableroOponente1
+    n1: int = 0  # Celdas no vacías en tablero1
+    n2: int = 0  # Celdas no vacías en tableroOponente1
     
-    filas = len(grilla_uno_local)
-    columnas = len(grilla_uno_local[0])
+    filas: int = len(grilla_uno_local)
+    columnas: int = len(grilla_uno_local[0])
     
     for i in range(filas):
         for j in range(columnas):
-            celda_tablero = grilla_uno_local[i][j]
-            celda_tablero_op = grilla_dos_local[i][j]
-            celda_tableroOponente = grilla_uno_oponente[i][j]
-            celda_tableroOponente_op = grilla_dos_oponente[i][j]
+            celda_tablero: Celda = grilla_uno_local[i][j]
+            celda_tablero_op: Celda = grilla_dos_local[i][j]
+            celda_tableroOponente: Celda = grilla_uno_oponente[i][j]
+            celda_tableroOponente_op: Celda = grilla_dos_oponente[i][j]
             
-            if celda_tablero != VACÍO:
+            if celda_tablero_op != VACÍO:
                 n1 += 1
-            if celda_tableroOponente != VACÍO:
+            if celda_tableroOponente_op != VACÍO:
                 n2 += 1
 
             # --- Primera parte del asegura ---
@@ -144,7 +152,7 @@ def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> b
                 if not (celda_tablero_op == VACÍO or celda_tablero_op == BARCO):
                     return False
             
-    
+    # Verifica que ambos jugadores tengan como mucho una celda descubierta de diferencia.
     if n1 - n2 < 0 or n1 - n2 > 1:
         return False
 
@@ -303,4 +311,105 @@ def sePuedeConstruirBarcoHorizontalDesde(grilla: Grilla, posición: Posición) -
     # Determina si desde una posición dada se puede construir un barco en orientación horizontal.
     return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, DERECHA) or hayBarcoAl(grilla, posición, IZQUIERDA))
 
+
+## Ejercicio 6
+# FUNCION PRINCIPAL
+def elJugadorConMejorPuntería(estadoDeJuego: EstadoJuego) -> Jugador:
+    """
+    Indica el jugador con mejor puntería del estado actual del juego 'estadoDeJuego'.
+    
+    PRE: esEstadoDeJuegoVálido(estadoDeJuego)
+         punteríaDeJugador(estadoDeJuego, UNO) ̸= punteríaDeJugador(estadoDeJuego, DOS)
+         
+    Args:
+        estadoDeJuego (EstadoJuego): tuple[Dimensiones, list[Barco], list[Jugador], Tablero, Tablero] que indica el estado actual del juego.
+    
+    Returns:
+        UNO si punteríaDeJugador(estadoDeJuego, UNO) es mayor que punteríaDeJugador(estadoDeJuego, DOS), DOS si es menor.
+    """
+    if punteríaDeJugador(estadoDeJuego, UNO) > punteríaDeJugador(estadoDeJuego, DOS):
+        return UNO
+    elif punteríaDeJugador(estadoDeJuego, UNO) < punteríaDeJugador(estadoDeJuego, DOS):
+        return DOS
+
+
+# FUNCIONES AUXILIARES
+def punteríaDeJugador(estadoDeJuego: EstadoJuego, jugador: Jugador) -> int:
+    res: int = cantidadDeBarcosDescubiertos(estadoDeJuego, jugador) - cantidadDePosicionesConAgua(grillaOponente(tableroDeJugador(estadoDeJuego, jugador)))
+
+    return res
+
+
+def cantidadDeBarcosDescubiertos(estadoDeJuego: EstadoJuego, jugador: Jugador) -> int:
+    res: int = 0
+
+    oponente: Jugador = jugadorOpuesto(jugador)
+
+    barcos_oponente: list[BarcoEnGrilla] = barcosEnGrilla(grillaLocal(tableroDeJugador(estadoDeJuego, oponente)))
+
+    for barco in barcos_oponente:
+        if barcoDescubiertoEn(barco, grillaOponente(tableroDeJugador(estadoDeJuego, jugador))):
+            res += 1
+    
+    return res
+
+
+def cantidadDePosicionesConAgua(grilla: Grilla) -> int:
+    res: int = 0
+    letras: list[str] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+
+    filas: int = len(grilla)
+    columnas: int = len(grilla[0])
+
+    for i in range(filas):
+        for j in range(columnas):
+            posición: Posición = (letras[i], j+1)
+            if esAgua(posición, grilla):
+                res += 1
+    
+    return res
+
+
+def barcoDescubiertoEn(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
+    for posición in barco:
+        if celdaEnPosición(grilla, posición) != VACÍO:
+            return True
+    
+    return False
+
+
+def jugadorOpuesto(jugador: Jugador) -> Jugador:
+    if jugador == UNO:
+        return DOS
+    else:
+        return UNO
+
+
+def esAgua(posición: Posición, grilla: Grilla) -> bool:
+    if celdaEnPosición(grilla, posición) == AGUA:
+        return True
+    return False
+
+
+# ejemplo = elJugadorConMejorPunter´ıa(((4,4),⟨2,2⟩,⟨UNO⟩,(⟨
+#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
+#  ⟨BARCO,AGUA,AGUA,VACIO⟩,
+#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,BARCO,VACIO⟩
+#  ⟩,⟨
+#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
+#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
+#  ⟨V ACIO,VACIO,VACIO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩),(⟨
+#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
+#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
+#  ⟨V ACIO,BARCO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩,⟨
+#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
+#  ⟨V ACIO,AGUA,AGUA,VACIO⟩,
+#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩)))
 
