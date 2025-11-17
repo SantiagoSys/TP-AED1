@@ -214,6 +214,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [DOS], (tablero), (tableroOponente)))
 
     def test_n1_menor_que_n2(self):
+        # En ambos tablero hay una diferencia de al menos 2 turnos jugados  → debe fallar
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -246,7 +247,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
 
 
     def test_primero_celda_vacia_con_agua_en_tablero_oponente(self):
-    # Caso: celda_tablero == VACÍO pero celda_tableroOponente_op == AGUA → debe fallar
+        # Caso: celda_tablero == VACÍO pero celda_tableroOponente_op == AGUA → debe fallar
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -279,6 +280,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
 
 
     def test_segundo_celda_vacia_con_agua_en_tablero_oponente(self):
+        # Caso: celda_tablero == VACÍO pero celda_tableroOponente_op == AGUA → debe fallar
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -311,6 +313,8 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
 
 
     def test_todo_agua(self):
+        # Caso: celda_tablero == AGUA para ambos tableros
+        #(o sea que no haya barcos disponibles en el estado de juego) → debe fallar
         grillaUnoLocal = [[AGUA, AGUA, AGUA, AGUA],
                           [AGUA, AGUA, AGUA, AGUA],
                           [AGUA, AGUA, AGUA, AGUA],
@@ -343,6 +347,8 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
 
 
     def test_todo_vacío(self):
+        # Caso: celda_tablero == VACÍO para ambos tableros
+        #(o sea que no haya barcos disponibles en el estado de juego) → debe fallar
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -368,6 +374,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
 
         estado = ((4,4), [1], [UNO], (tablero), (tableroOponente))
 
+        # Verifica que el estado de juego NO sea válido.
         self.assertFalse(esEstadoDeJuegoVálido(estado))
         # Verifica que el estado cuente con todas las características que propuse.
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
@@ -409,7 +416,10 @@ class DispararEnPosición_Test(unittest.TestCase):
         self.assertEqual(resultado, NADA)
         self.assertEqual(estado, estado_esperado)
 
+
     def test_disparo_en_posicion_uno_tocado(self):
+        # Jugador UNO lanzó un disparo e impactó, por lo que el estado debería cambiar
+        #y jugador UNO debería marcar ese barco en su tablero oponente.
         estado = ((5,5), [3, 2], [UNO],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
               [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -439,10 +449,15 @@ class DispararEnPosición_Test(unittest.TestCase):
               [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
 
         resultado = dispararEnPosición(estado, ("A", 1))
+        # Verifica que un barco haya sido impactado.
         self.assertEqual(resultado, TOCADO)
+        # Verifica que el estado del tablero antes y despues del disparo no cambien.
         self.assertEqual(estado, estado_esperado)
 
+
     def test_disparo_en_posicion_dos_tocado(self):
+        # Jugador UNO lanzó un disparo e impactó, por lo que el estado debería cambiar
+        #y jugador UNO debería marcar ese barco en su tablero oponente.
         estado = ((5,5), [3, 2], [DOS],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
              [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -473,10 +488,15 @@ class DispararEnPosición_Test(unittest.TestCase):
              [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]])
         )
         resultado = dispararEnPosición(estado, ("A", 1))
+        # Verifica que un barco haya sido impactado.
         self.assertEqual(resultado, TOCADO)
+        # Verifica que el estado del tablero antes y despues del disparo no cambien.
         self.assertEqual(estado, estado_esperado)
 
+
     def test_disparo_en_posicion_dos_vacia(self):
+        # Jugador DOS lanzó un disparo y NO impactó, por lo que el estado debería cambiar
+        #y jugador DOS debería marcar ese espacio como AGUA en su tablero oponente.
         estado = ((5,5), [3, 2], [DOS],
             ([[BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [BARCO, VACÍO, VACÍO, VACÍO, VACÍO],
               [BARCO, VACÍO, VACÍO, VACÍO, VACÍO], [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -506,13 +526,16 @@ class DispararEnPosición_Test(unittest.TestCase):
               [VACÍO, VACÍO, VACÍO, VACÍO, VACÍO]]))
 
         resultado = dispararEnPosición(estado, ("A", 2))
+        # Verifica que ningún barco haya sido impactado.
         self.assertEqual(resultado, NADA)
+        # Verifica que el estado del tablero antes y despues del disparo no cambien.
         self.assertEqual(estado, estado_esperado)
 
 
 #Tests Ejercicio 5
 class barcosEnGrilla_Test(unittest.TestCase):
-    def test_varios_barcos_distintos_tamanios(self): # Varios barcos de distintos tamaños en una grilla con varios barcos de distintos tamaños
+    def test_varios_barcos_distintos_tamanios(self):
+        # Varios barcos de distintos tamaños en una grilla con varios barcos de distintos tamaños
         grilla: Grilla = [[VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, VACÍO, VACÍO, BARCO, BARCO, BARCO, VACÍO],
                           [BARCO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO, VACÍO],
@@ -590,6 +613,8 @@ class barcosEnGrilla_Test(unittest.TestCase):
 # Tests Ejercicio 6
 class elJugadorConMejorPuntería_Test(unittest.TestCase):
     def test_gana_jugador_dos(self):
+        # En tablero DOS oponente hay mas celdas BARCO que en
+        #tablero UNO oponente, tal que estas celdas no sean adyacentes.
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, AGUA, AGUA, VACÍO],
                           [BARCO, VACÍO, BARCO, VACÍO],
@@ -615,9 +640,13 @@ class elJugadorConMejorPuntería_Test(unittest.TestCase):
 
         estado = ((4,4), [1], [UNO], (tablero), (tableroOponente))
         
+        # Verifica que el jugador con mejor puntería es el jugador DOS.
         self.assertEqual(elJugadorConMejorPuntería(estado), DOS)
 
+
     def test_gana_jugador_uno(self):
+        # En tablero UNO oponente hay mas celdas BARCO que en
+        #tablero DOS oponente, tal que estas celdas no sean adyacentes.
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [BARCO, AGUA, AGUA, VACÍO],
                           [BARCO, VACÍO, BARCO, VACÍO],
@@ -643,6 +672,7 @@ class elJugadorConMejorPuntería_Test(unittest.TestCase):
 
         estado = ((4,4), [1], [UNO], (tablero), (tableroOponente))
         
+        # Verifica que el jugador con mejor puntería es el jugador UNO.
         self.assertEqual(elJugadorConMejorPuntería(estado), UNO)
 
 if __name__ == '__main__':
