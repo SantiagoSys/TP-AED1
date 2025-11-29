@@ -52,13 +52,13 @@ def nuevoJuego(
 # Separa la grilla local de la grilla oponente para evitar mezclarlas y conseguir
 #un nuevo tablero formado por ambas.
 def nuevoTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Tablero:
-    grilla_local: Grilla = nuevoTableroAux(cantidadDeFilas, cantidadDeColumnas)
-    grilla_oponente: Grilla = nuevoTableroAux(cantidadDeFilas, cantidadDeColumnas)
+    grilla_local: Grilla = grillaDelTablero(cantidadDeFilas, cantidadDeColumnas)
+    grilla_oponente: Grilla = grillaDelTablero(cantidadDeFilas, cantidadDeColumnas)
     return (grilla_local, grilla_oponente)
 
 # Describe una nueva grilla, tomando en cuenta la cantidad de filas y de columnas,
 #que cuenta con todas sus celdas vacías.
-def nuevoTableroAux(cantidadDeFilas: int, cantidadDeColumnas: int) -> Grilla:
+def grillaDelTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Grilla:
     grilla: Grilla = []
     for i in range(0, cantidadDeFilas):
         fila_con_vacios: list[Celda] = []
@@ -153,16 +153,16 @@ def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> b
                     return False
             
     # Verifica que ambos jugadores tengan como mucho una celda descubierta de diferencia.
-    if n1 - n2 < 0 or n1 - n2 > 1:
-        return False
+    return n1 - n2 < 0 or n1 - n2 > 1
 
-    return True
-
-def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:
+def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool: # --> CORREGÍ
     # Indica si cada uno de los elementos pertenecientes a la primera lista aparece también en la segunda.
     for elemento in lista1:
         if cantidadDeApariciones(elemento, lista1) != cantidadDeApariciones(elemento, lista2):  # cantidadDeApariciones me devuelve la cantidad de veces
             return False                                                                       # que un elemento aparece en una lista.
+    for elemento in lista2:
+        if cantidadDeApariciones(elemento, lista1) != cantidadDeApariciones(elemento, lista2):  # cantidadDeApariciones me devuelve la cantidad de veces
+            return False
     return True
 
 def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:
@@ -304,7 +304,7 @@ def posicionesOcupadasEnGrilla(grilla: Grilla, posiciones: list[Posición]) -> b
     return True                                         # hayBarcoAl me indica si hay una posición adyacente a *posición* hacia *dirección* en la grilla *grilla* que tenga barco.
 
 def sePuedeConstruirBarcoVerticalDesde(grilla: Grilla, posición: Posición) -> bool:
-    # Determina si desde una posición dada se puede construir un barco en orientación vertical.
+    # Determina si desde una posición dada se pue# Verifica que el estado de juego NO sea válido.de construir un barco en orientación vertical.
     return celdaEnPosición(grilla, posición) == BARCO and (hayBarcoAl(grilla, posición, ARRIBA) or hayBarcoAl(grilla, posición, ABAJO))
 
 def sePuedeConstruirBarcoHorizontalDesde(grilla: Grilla, posición: Posición) -> bool:
@@ -389,27 +389,4 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
     if celdaEnPosición(grilla, posición) == AGUA:
         return True
     return False
-
-
-# ejemplo = elJugadorConMejorPunter´ıa(((4,4),⟨2,2⟩,⟨UNO⟩,(⟨
-#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
-#  ⟨BARCO,AGUA,AGUA,VACIO⟩,
-#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
-#  ⟨AGUA,VACIO,BARCO,VACIO⟩
-#  ⟩,⟨
-#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
-#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
-#  ⟨V ACIO,VACIO,VACIO,AGUA⟩,
-#  ⟨AGUA,VACIO,VACIO,VACIO⟩
-#  ⟩),(⟨
-#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
-#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
-#  ⟨V ACIO,BARCO,BARCO,AGUA⟩,
-#  ⟨AGUA,VACIO,VACIO,VACIO⟩
-#  ⟩,⟨
-#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
-#  ⟨V ACIO,AGUA,AGUA,VACIO⟩,
-#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
-#  ⟨AGUA,VACIO,VACIO,VACIO⟩
-#  ⟩)))
 
