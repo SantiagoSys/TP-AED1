@@ -174,7 +174,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [2,2], [DOS], (grillaUnoLocal, grillaUnoOponente), (grillaDosLocal, grillaDosOponente)))
 
 
-    def test_posiciones_no_coinciden_en_tablero1_vs_tableroOponente0(self): # ---> NO HACE FALTA
+    def test_posiciones_no_coinciden_en_tablero1_vs_tableroOponente0(self):
         # En tablero UNO hay un BARCO que no está reflejado igual en tableroOponente0.
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -205,7 +205,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [DOS], (tablero), (tableroOponente)))
 
 
-    def test_posiciones_no_coinciden_en_tableroOponente1_vs_tablero0(self): # ---> SI HACE FALTA
+    def test_posiciones_no_coinciden_en_tableroOponente1_vs_tablero0(self):
         # En tablero DOS oponente hay un BARCO que no está reflejado igual en tablero UNO.
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -265,7 +265,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
 
 
-    def test_primero_celda_vacia_con_agua_en_tablero_oponente(self): # ---> SI HACE FALTA
+    def test_primero_celda_vacia_con_agua_en_tablero_oponente(self):
     # Caso: celda_tablero == VACÍO pero celda_tableroOponente_op == AGUA → debe fallar
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -296,7 +296,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
 
 
-    def test_segundo_celda_vacia_con_agua_en_tablero_oponente(self): # ---> SI HACE FALTA
+    def test_segundo_celda_vacia_con_agua_en_tablero_oponente(self):
         grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
                           [VACÍO, VACÍO, VACÍO, VACÍO],
@@ -326,7 +326,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
 
 
-    def test_todo_agua(self): # ---> SI HACE FALTA
+    def test_todo_agua(self):
         grillaUnoLocal = [[AGUA, AGUA, AGUA, AGUA],
                           [AGUA, AGUA, AGUA, AGUA],
                           [AGUA, AGUA, AGUA, AGUA],
@@ -459,7 +459,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
         self.assertFalse(esEstadoDeJuegoVálido(estado))
         self.assertEqual(estado, ((4,4), [1], [UNO], (tablero), (tableroOponente)))
     
-    def test_linea_33_cantidad_filas_incorrecta(self):
+    def test_una_fila_menos(self):
         grillaUnoLocal = [
             [VACÍO, VACÍO],
             [VACÍO, VACÍO],
@@ -474,7 +474,7 @@ class esEstadoDeJuegoVálido_Test(unittest.TestCase):
     
         grillaDosLocal = [
             [VACÍO, VACÍO],
-            [VACÍO, VACÍO]   # <-- UNA FILA MENOS → dispara línea 33
+            [VACÍO, VACÍO]
         ]
     
         grillaDosOponente = [
@@ -783,5 +783,6 @@ class elJugadorConMejorPuntería_Test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
+
 
 
