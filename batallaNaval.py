@@ -89,27 +89,6 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
     if len(tablero) != 2 or len(tableroOponente) != 2:
         return False
 
-    grillas: list[Grilla] = [grilla_uno_local, grilla_uno_oponente, grilla_dos_local, grilla_dos_oponente]
-
-    for grilla in grillas:
-        if len(grilla) == 0:
-            return False
-
-        for fila in grilla:
-            if len(fila) == 0:
-                return False    # verifica que no haya grillas vacías.
-            
-    filas = len(grilla_uno_local)
-    columnas = len(grilla_uno_local[0])
-
-    for grilla in grillas:
-        if len(grilla) != filas:
-            return False
-        
-        for fila in grilla:
-            if len(fila) != columnas:
-                return False            # verifica que todas las grillas tengan exactamente las mismas dimensiones.
-
     hayEntre1y26Filas: bool = cantidadDeFilasEstadoJuego(estadoDeJuego) >= 1 and cantidadDeFilasEstadoJuego(estadoDeJuego) <= 26
 
     hayAlMenosUnaColumna: bool = cantidadDeColumnasEstadoJuego(estadoDeJuego) > 0
@@ -122,7 +101,9 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
 
     tableroDeJugadorDOSEsValido: bool = tableroVálidoEnJuego(tableroDeJugador(estadoDeJuego, DOS), estadoDeJuego)
 
-    losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
+    losAtaquesCoinciden: bool = False
+    if tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido:
+        losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
 
     return hayEntre1y26Filas and hayAlMenosUnaColumna and soloUnJugadorALaVez and hayAlMenosUnBarcoEnJuego and tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido and losAtaquesCoinciden
     
@@ -227,7 +208,6 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
         TOCADO si el disparo impactó un barco y NADA si no.
     """
     jugador_actual: Jugador = turno(estado_juego)
-    
     if jugador_actual == UNO:
         jugador_oponente: Jugador = DOS
     else:
@@ -421,5 +401,7 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
     if celdaEnPosición(grilla, posición) == AGUA:
         return True
     return False
+
+
 
 
