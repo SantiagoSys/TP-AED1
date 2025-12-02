@@ -81,11 +81,6 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
     tablero: Tablero = estadoDeJuego[3]
     tableroOponente: Tablero = estadoDeJuego[4]
 
-    grilla_uno_local: Grilla = tablero[0]
-    grilla_uno_oponente: Grilla = tablero[1]
-    grilla_dos_local: Grilla = tableroOponente[0]
-    grilla_dos_oponente: Grilla = tableroOponente[1]
-
     if len(tablero) != 2 or len(tableroOponente) != 2:
         return False
 
@@ -106,6 +101,7 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
         losAtaquesCoinciden: bool = coincidenPosicionesAtacadas(tableroDeJugador(estadoDeJuego, UNO), tableroDeJugador(estadoDeJuego, DOS))
 
     return hayEntre1y26Filas and hayAlMenosUnaColumna and soloUnJugadorALaVez and hayAlMenosUnBarcoEnJuego and tableroDeJugadorUNOEsValido and tableroDeJugadorDOSEsValido and losAtaquesCoinciden
+
     
 # FUNCIONES AUXILIARES
 def coincidenPosicionesAtacadas(tablero: Tablero, tableroOponente: Tablero) -> bool:
@@ -158,13 +154,16 @@ def coincidenOponente1Tablero0(celda_tableroOponente_op: Celda, celda_tablero: C
 
 
 def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:
+    lasDosIguales: bool = True
+
     for elemento in lista1:
         if cantidadDeApariciones(elemento, lista1) != cantidadDeApariciones(elemento, lista2):
-            return False
+            lasDosIguales = False
     for elemento in lista2:
         if cantidadDeApariciones(elemento, lista1) != cantidadDeApariciones(elemento, lista2):
-            return False
-    return True
+            lasDosIguales = False
+            
+    return lasDosIguales
 
 
 def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:
@@ -341,7 +340,7 @@ def elJugadorConMejorPuntería(estadoDeJuego: EstadoJuego) -> Jugador:
     """
     if punteríaDeJugador(estadoDeJuego, UNO) > punteríaDeJugador(estadoDeJuego, DOS):
         return UNO
-    elif punteríaDeJugador(estadoDeJuego, UNO) < punteríaDeJugador(estadoDeJuego, DOS):
+    else:
         return DOS
 
 
@@ -401,7 +400,5 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
     if celdaEnPosición(grilla, posición) == AGUA:
         return True
     return False
-
-
 
 
