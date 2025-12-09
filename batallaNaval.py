@@ -451,3 +451,37 @@ def quedanDisparosPosibles(estadoDeJuego: EstadoJuego) -> bool:
         letraFila = siguienteLetra(letraFila)
 
     return False
+
+
+# Tests ejercicio 7
+class juegoTerminado_Test(unittest.TestCase):
+    def test_juego_no_terminado(self):
+        grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, AGUA, AGUA, VACÍO],
+                          [BARCO, VACÍO, BARCO, VACÍO],
+                          [AGUA, VACÍO, BARCO, VACÍO]]
+
+        grillaUnoOponente = [[VACÍO, VACÍO, AGUA, BARCO],
+                             [VACÍO, AGUA, VACÍO, BARCO],
+                             [VACÍO, VACÍO, VACÍO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosLocal = [[VACÍO, VACÍO, AGUA, BARCO],
+                          [VACÍO, AGUA, VACÍO, BARCO],
+                          [VACÍO, BARCO, BARCO, AGUA],
+                          [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosOponente = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                             [VACÍO, AGUA, AGUA, VACÍO],
+                             [BARCO, VACÍO, BARCO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        tablero = (grillaUnoLocal, grillaUnoOponente)
+        tableroOponente = (grillaDosLocal, grillaDosOponente)
+
+        estado = ((4,4), [2,2], [UNO], (tablero), (tableroOponente))
+
+        self.assertFalse(juegoTerminado(estado))
+
+if __name__ == '__main__':
+    unittest.main(verbosity=1)
