@@ -412,12 +412,12 @@ def todosLosBarcosHundidos(estadoDeJuego: EstadoJuego, jugador: Jugador) -> bool
     grilla_disparos_rival: Grilla = grillaOponente(tableroDeJugador(estadoDeJuego, jugadorOpuesto(jugador)))
 
     for barco in barcosEnGrilla(grillaLocal(tablero_jugador)):
-        if not barcoDescubiertoEn2(barco, grilla_disparos_rival):
+        if not barcoHundidoEn(barco, grilla_disparos_rival):
             return False
 
     return True
 
-def barcoDescubiertoEn2(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
+def barcoHundidoEn(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
     for posición in barco:
         if celdaEnPosición(grilla, posición) != BARCO:
             return False
@@ -426,3 +426,4 @@ def barcoDescubiertoEn2(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
 def jugadorGanador(estadoDeJuego: EstadoJuego) -> bool:
     if juegoTerminado(estadoDeJuego):
         return turno(estadoDeJuego)
+
