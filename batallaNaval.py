@@ -402,6 +402,31 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
     return False
 
 
+def juegoTerminado(estadoDeJuego: EstadoJuego) -> bool:
+    return todosLosBarcosHundidos(estadoDeJuego, UNO) or todosLosBarcosHundidos(estadoDeJuego, DOS)
+
+def todosLosBarcosHundidos(estadoDeJuego: EstadoJuego, jugador: Jugador) -> bool:
+    tablero_jugador: Tablero = tableroDeJugador(estadoDeJuego, jugador)
+
+    # Esta es la grilla correcta: los disparos del rival hacia "jugador"
+    grilla_disparos_rival: Grilla = grillaOponente(tableroDeJugador(estadoDeJuego, jugadorOpuesto(jugador)))
+
+    for barco in barcosEnGrilla(grillaLocal(tablero_jugador)):
+        if not barcoHundidoEn(barco, grilla_disparos_rival):
+            return False
+
+    return True
+
+def barcoHundidoEn(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
+    for posición in barco:
+        if celdaEnPosición(grilla, posición) != BARCO:
+            return False
+    return True
+
+def jugadorGanador(estadoDeJuego: EstadoJuego) -> bool:
+    if juegoTerminado(estadoDeJuego):
+        return turno(estadoDeJuego)
+
 
 # ejemplo = elJugadorConMejorPunter´ıa(((4,4),⟨2,2⟩,⟨UNO⟩,(⟨
 #  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
@@ -424,5 +449,6 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
 #  ⟨BARCO,VACIO,BARCO,AGUA⟩,
 #  ⟨AGUA,VACIO,VACIO,VACIO⟩
 #  ⟩)))
+
 
 
