@@ -171,7 +171,7 @@ def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:
 
     for barco in barcos:
         tamaño: int = len(barco)
-        res.append(tamaño)          # Me agrega la longitud de cada barco a la lista.
+        res.append(tamaño)
 
     return res
 
@@ -215,8 +215,8 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
     tablero_jugador_actual: Tablero = tableroDeJugador(estado_juego, jugador_actual)
     tablero_jugador_oponente: Tablero = tableroDeJugador(estado_juego, jugador_oponente)
 
-    grilla_oponente_jugador_actual: Grilla = grillaOponente(tablero_jugador_actual)     # Obtenemos la grilla oponente del jugador actual.
-    grilla_local_jugador_oponente: Grilla = grillaLocal(tablero_jugador_oponente)       # Obtenemos la grilla local del jugador oponente.
+    grilla_oponente_jugador_actual: Grilla = grillaOponente(tablero_jugador_actual)
+    grilla_local_jugador_oponente: Grilla = grillaLocal(tablero_jugador_oponente)
 
     celda_objetivo: Celda = celdaEnPosición(grilla_local_jugador_oponente, posición)
     if celda_objetivo == BARCO:
@@ -402,54 +402,27 @@ def esAgua(posición: Posición, grilla: Grilla) -> bool:
     return False
 
 
-def juegoTerminado(estadoDeJuego: EstadoJuego) -> bool:
-    return todosLosBarcosHundidos(estadoDeJuego, UNO) or todosLosBarcosHundidos(estadoDeJuego, DOS)
 
-def todosLosBarcosHundidos(estadoDeJuego: EstadoJuego, jugador: Jugador) -> bool:
-    tablero_jugador: Tablero = tableroDeJugador(estadoDeJuego, jugador)
-
-    # Esta es la grilla correcta: los disparos del rival hacia "jugador"
-    grilla_disparos_rival: Grilla = grillaOponente(tableroDeJugador(estadoDeJuego, jugadorOpuesto(jugador)))
-
-    for barco in barcosEnGrilla(grillaLocal(tablero_jugador)):
-        if not barcoHundidoEn(barco, grilla_disparos_rival):
-            return False
-
-    return True
-
-def barcoHundidoEn(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
-    for posición in barco:
-        if celdaEnPosición(grilla, posición) != BARCO:
-            return False
-    return True
-
-def jugadorGanador(estadoDeJuego: EstadoJuego) -> bool:
-    if juegoTerminado(estadoDeJuego):
-        return turno(estadoDeJuego)
-
-def quedanDisparosPosibles(estadoDeJuego: EstadoJuego) -> bool:
-    dimensiones: Dimensiones = dimensionesEstadoJuego(estadoDeJuego)
-    filas: int = dimensiones[0]
-    columnas: int = dimensiones[1]
-
-    jugadorActual: Jugador = turno(estadoDeJuego)
-    tablero: Tablero = tableroDeJugador(estadoDeJuego, jugadorActual)
-    grillaOpo: Grilla = grillaOponente(tablero)
-
-    letraFila: str
-    numeroCol: int
-
-    # Recorremos todas las posiciones buscando alguna VACÍA
-    letraFila = 'A'
-    for _ in range(filas):
-        numeroCol = 1
-        for _ in range(columnas):
-            posición: Posición = (letraFila, numeroCol)
-            if celdaEnPosición(grillaOpo, posición) == VACÍO:
-                return True
-            numeroCol = numeroCol + 1
-        letraFila = siguienteLetra(letraFila)
-
-    return False
+# ejemplo = elJugadorConMejorPunter´ıa(((4,4),⟨2,2⟩,⟨UNO⟩,(⟨
+#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
+#  ⟨BARCO,AGUA,AGUA,VACIO⟩,
+#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,BARCO,VACIO⟩
+#  ⟩,⟨
+#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
+#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
+#  ⟨V ACIO,VACIO,VACIO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩),(⟨
+#  ⟨V ACIO,VACIO,AGUA,BARCO⟩,
+#  ⟨V ACIO,AGUA,VACIO,BARCO⟩,
+#  ⟨V ACIO,BARCO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩,⟨
+#  ⟨V ACIO,VACIO,VACIO,VACIO⟩,
+#  ⟨V ACIO,AGUA,AGUA,VACIO⟩,
+#  ⟨BARCO,VACIO,BARCO,AGUA⟩,
+#  ⟨AGUA,VACIO,VACIO,VACIO⟩
+#  ⟩)))
 
 
