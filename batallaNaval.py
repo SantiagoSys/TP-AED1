@@ -427,3 +427,27 @@ def jugadorGanador(estadoDeJuego: EstadoJuego) -> bool:
     if juegoTerminado(estadoDeJuego):
         return turno(estadoDeJuego)
 
+def quedanDisparosPosibles(estadoDeJuego: EstadoJuego) -> bool:
+    dimensiones: Dimensiones = dimensionesEstadoJuego(estadoDeJuego)
+    filas: int = dimensiones[0]
+    columnas: int = dimensiones[1]
+
+    jugadorActual: Jugador = turno(estadoDeJuego)
+    tablero: Tablero = tableroDeJugador(estadoDeJuego, jugadorActual)
+    grillaOpo: Grilla = grillaOponente(tablero)
+
+    letraFila: str
+    numeroCol: int
+
+    # Recorremos todas las posiciones buscando alguna VACÍA
+    letraFila = 'A'
+    for _ in range(filas):
+        numeroCol = 1
+        for _ in range(columnas):
+            posición: Posición = (letraFila, numeroCol)
+            if celdaEnPosición(grillaOpo, posición) == VACÍO:
+                return True
+            numeroCol = numeroCol + 1
+        letraFila = siguienteLetra(letraFila)
+
+    return False
