@@ -452,4 +452,111 @@ def jugadorGanador(estadoDeJuego: EstadoJuego) -> Jugador:
 #  ⟩)))
 
 
+def cantidadDeBarcosHundidos(estadoDeJuego: EstadoJuego, jugador: Jugador) -> int:
+    # Determino el oponente
+    jugadores: list[Jugador] = estadoDeJuego[2]
+    jugadorOpuesto: Jugador = UNO
+    for j in jugadores:
+        if j != jugador:
+            jugadorOpuesto = j
 
+    # Obtengo tableros
+    tableroActual = tableroDeJugador(estadoDeJuego, jugador)
+    tableroEnemigo = tableroDeJugador(estadoDeJuego, jugadorOpuesto)
+
+    grillaAtaques: Grilla = grillaOponente(tableroActual)
+    barcosDelEnemigo: list[BarcoEnGrilla] = tableroEnemigo[0]  # grillaLocal? o lista de barcos, depende del modelo
+
+    # Contador
+    cant: int = 0
+
+    # Recorro cada barco
+    for barco in barcosDelEnemigo:
+        hundido: bool = True
+
+        # Verifico si todas las posiciones fueron tocadas
+        for pos in barco:
+            letra: str = pos[0]
+            numero: int = pos[1]
+            if celdaEnPosición(grillaAtaques, (letra, numero)) != BARCO:
+                hundido = False
+
+        if hundido:
+            cant = cant + 1
+
+    return cant
+
+
+def barcoMásCercanoASerHundido(estadoDeJuego: EstadoJuego, jugador: Jugador) -> BarcoEnGrilla:
+    dimensiones: Dimensiones = estadoDeJuego[0]
+    barcosDisponibles: list[Barco] = estadoDeJuego[1]
+    turnos: list[Jugador] = estadoDeJuego[2]
+    tablerosLocales: Tablero = estadoDeJuego[3]
+    tablerosOponentes: Tablero = estadoDeJuego[4]
+
+    # Determinar jugador oponente
+    jugadorOpuesto: Jugador = UNO
+    if jugador == UNO:
+        jugadorOpuesto = DOS
+    else:
+        jugadorOpuesto = UNO
+
+    # Seleccionar grilla local + grilla donde se registran los disparos
+    grillaLocalOponente: Grilla = tablerosLocales[jugadorOpuesto == DOS]
+    grillaDisparosDelJugador: Grilla = tablerosOponentes[jugador == DOS]
+
+    # Obtener todos los barcos en la grilla del oponente
+    barcosEnemigos: list[BarcoEnGrilla] = barcosEnGrilla(grillaLocalOponente)
+
+    mejorBarco: BarcoEnGrilla = []
+    maxTocadas: int = -1
+
+    # Buscar el barco con mayor cantidad de posiciones tocadas
+    for barco in barcosEnemigos:
+        tocadas: int = 0
+        for pos in barco:
+            # Si la celda en la grilla de disparos del jugador es TOCADO
+            if celdaEnPosición(grillaDisparosDelJugador, pos) == TOCADO:
+                tocadas = tocadas + 1
+
+        # Es el más cercano a hundirse si tiene más tocadas
+        if tocadas > maxTocadas:
+            maxTocadas = tocadas
+            mejorBarco = barco.copy()  # copia permitida
+
+    return mejorBarco
+
+
+def quedanBarcosSinTocar(estadoDeJuego: EstadoJuego, jugador: Jugador) -> bool:
+    # Extraemos las grillas relevantes
+    tablero_jugador: Tablero = tableroDeJugador(estadoDeJuego, jugador)
+    grilla_barcos: Grilla = grillaLocal(tablero_jugador)
+
+    # Obtenemos todos los barcos del jugador en forma de lista de BarcoEnGrilla
+    barcos: list[BarcoEnGrilla] = barcosEnGrilla(grilla_barcos)
+
+    # Recorremos cada barco y verificamos si tiene al menos una posición sin tocar
+    for barco in barcos:
+        # Para cada posición del barco verificamos si sigue siendo BARCO en la grilla
+        for posicion in barco:
+            if celdaEnPosición(grilla_barcos, posicion) == BARCO:
+                # Todavía queda una parte del barco intacta → quedan barcos sin tocar
+                return True
+
+    # Si recorrimos todo y nunca vimos un BARCO intacto, no quedan barcos sin tocar
+    return False
+
+
+def esBarcoHundido(grillaOponente: Grilla, barco: BarcoEnGrilla) -> bool:
+    """
+    Devuelve True si todas las posiciones del barco han sido atacadas
+    en la grillaOponente.
+    """
+    # Recorremos cada posición del barco:
+    for pos in barco:
+        # Si alguna posición NO está atacada (no es AGUA), entonces no está hundido
+        if celdaEnPosición(grillaOponente, pos) != AGUA:
+            return False
+
+    # Si todas las posiciones estaban atacadas
+    return True
