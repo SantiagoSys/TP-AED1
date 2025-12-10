@@ -1369,6 +1369,125 @@ class elJugadorConMejorPuntería_Test(unittest.TestCase):
         self.assertEqual(elJugadorConMejorPuntería(estado), UNO)
 
 
+# Tests ejercicio 7
+class juegoTerminado_Test(unittest.TestCase):
+    def test_juego_no_terminado(self):
+        grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, AGUA, AGUA, VACÍO],
+                          [BARCO, VACÍO, BARCO, VACÍO],
+                          [AGUA, VACÍO, BARCO, VACÍO]]
+
+        grillaUnoOponente = [[VACÍO, VACÍO, AGUA, BARCO],
+                             [VACÍO, AGUA, VACÍO, BARCO],
+                             [VACÍO, VACÍO, VACÍO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosLocal = [[VACÍO, VACÍO, AGUA, BARCO],
+                          [VACÍO, AGUA, VACÍO, BARCO],
+                          [VACÍO, BARCO, BARCO, AGUA],
+                          [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosOponente = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                             [VACÍO, AGUA, AGUA, VACÍO],
+                             [BARCO, VACÍO, BARCO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        tablero = (grillaUnoLocal, grillaUnoOponente)
+        tableroOponente = (grillaDosLocal, grillaDosOponente)
+
+        estado = ((4,4), [2,2], [UNO], (tablero), (tableroOponente))
+
+        self.assertNotEqual(jugadorGanador(estado), UNO)
+
+    def test_juego_terminado(self):
+        grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, AGUA, AGUA, VACÍO],
+                          [BARCO, VACÍO, BARCO, VACÍO],
+                          [AGUA, VACÍO, BARCO, VACÍO]]
+
+        grillaUnoOponente = [[VACÍO, VACÍO, AGUA, BARCO],
+                             [VACÍO, VACÍO, VACÍO, BARCO],
+                             [VACÍO, BARCO, BARCO, AGUA],
+                             [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosLocal = [[VACÍO, VACÍO, AGUA, BARCO],
+                          [VACÍO, VACÍO, VACÍO, BARCO],
+                          [VACÍO, BARCO, BARCO, AGUA],
+                          [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosOponente = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                             [VACÍO, AGUA, AGUA, VACÍO],
+                             [BARCO, VACÍO, BARCO, AGUA],
+                             [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        tablero = (grillaUnoLocal, grillaUnoOponente)
+        tableroOponente = (grillaDosLocal, grillaDosOponente)
+
+        estado = ((4,4), [2,2], [UNO], (tablero), (tableroOponente))
+
+        self.assertTrue(juegoTerminado(estado))
+
+
+class jugadorGanador_Test(unittest.TestCase):
+    def test_gana_J1(self):
+        grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, AGUA, AGUA, VACÍO],
+                          [BARCO, VACÍO, BARCO, VACÍO],
+                          [AGUA, VACÍO, BARCO, VACÍO]]
+
+        grillaUnoOponente = [[VACÍO, VACÍO, AGUA, BARCO],
+                             [VACÍO, VACÍO, VACÍO, BARCO],
+                             [VACÍO, BARCO, BARCO, AGUA],
+                             [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosLocal = [[VACÍO, VACÍO, AGUA, BARCO],
+                          [VACÍO, VACÍO, VACÍO, BARCO],
+                          [VACÍO, BARCO, BARCO, AGUA],
+                          [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosOponente = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                             [VACÍO, AGUA, AGUA, VACÍO],
+                             [BARCO, VACÍO, BARCO, AGUA],
+                             [VACÍO, VACÍO, VACÍO, VACÍO]]
+
+        tablero = (grillaUnoLocal, grillaUnoOponente)
+        tableroOponente = (grillaDosLocal, grillaDosOponente)
+
+        estado = ((4,4), [2,2], [UNO], (tablero), (tableroOponente))
+
+        self.assertEqual(jugadorGanador(estado), UNO)
+    
+    def juego_continua(self):
+        grillaUnoLocal = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                          [BARCO, AGUA, AGUA, VACÍO],
+                          [BARCO, VACÍO, BARCO, VACÍO],
+                          [AGUA, VACÍO, BARCO, VACÍO]]
+
+        grillaUnoOponente = [[VACÍO, VACÍO, AGUA, BARCO],
+                             [VACÍO, AGUA, VACÍO, BARCO],
+                             [VACÍO, VACÍO, VACÍO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosLocal = [[VACÍO, VACÍO, AGUA, BARCO],
+                          [VACÍO, AGUA, VACÍO, BARCO],
+                          [VACÍO, BARCO, BARCO, AGUA],
+                          [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        grillaDosOponente = [[VACÍO, VACÍO, VACÍO, VACÍO],
+                             [VACÍO, AGUA, AGUA, VACÍO],
+                             [BARCO, VACÍO, BARCO, AGUA],
+                             [AGUA, VACÍO, VACÍO, VACÍO]]
+
+        tablero = (grillaUnoLocal, grillaUnoOponente)
+        tableroOponente = (grillaDosLocal, grillaDosOponente)
+
+        estado = ((4,4), [2,2], [UNO], (tablero), (tableroOponente))
+
+        self.assertFalse(juegoTerminado(estado))
+        self.assertNotEqual(jugadorGanador(estado), UNO)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=1)
+
 
