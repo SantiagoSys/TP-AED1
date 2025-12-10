@@ -423,9 +423,10 @@ def barcoHundidoEn(barco: BarcoEnGrilla, grilla: Grilla) -> bool:
             return False
     return True
 
-def jugadorGanador(estadoDeJuego: EstadoJuego) -> bool:
+def jugadorGanador(estadoDeJuego: EstadoJuego) -> Jugador:
     if juegoTerminado(estadoDeJuego):
         return turno(estadoDeJuego)
+
 
 
 # ejemplo = elJugadorConMejorPunter´ıa(((4,4),⟨2,2⟩,⟨UNO⟩,(⟨
